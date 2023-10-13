@@ -2904,9 +2904,11 @@ dependencies = [
  "flate2",
  "fluvio-future",
  "fluvio-hub-protocol",
+ "fluvio-mini-http",
  "fluvio-types",
  "hex",
  "http-client",
+ "hyper",
  "pathdiff",
  "pem",
  "rand 0.8.5",
@@ -2926,6 +2928,22 @@ dependencies = [
  "tracing-subscriber",
  "url",
  "wasmparser 0.113.3",
+]
+
+[[package]]
+name = "fluvio-mini-http"
+version = "0.1.0"
+source = "git+https://github.com/matheus-consoli/fluvio-mini-http.git?branch=first-impl#843a5907c3645c6b3d157aec1b51c9506e597b9d"
+dependencies = [
+ "async-std",
+ "eyre",
+ "fluvio-future",
+ "http",
+ "hyper",
+ "rustls 0.21.7",
+ "rustls-webpki",
+ "tokio",
+ "webpki-roots 0.25.2",
 ]
 
 [[package]]
@@ -7433,9 +7451,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.32.0"
+version = "1.33.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17ed6077ed6cd6c74735e21f37eb16dc3935f96878b1fe961074089cc80893f9"
+checksum = "4f38200e3ef7995e5ef13baec2f432a6da0aa9ac495b2c0e8f3b7eec2c92d653"
 dependencies = [
  "backtrace",
  "bytes 1.5.0",

@@ -39,6 +39,8 @@ wasmparser = { workspace = true }
 fluvio-future = { workspace = true, features = ["fixture", "task"] }
 fluvio-hub-protocol = { path = "../fluvio-hub-protocol" }
 fluvio-types = { workspace = true }
+fluvio-mini-http = { workspace = true }
+hyper = { version = "0.14.27", default-features = false }
 
 [dev-dependencies]
 tracing-subscriber = { workspace = true,  features = ["env-filter", "fmt"] }

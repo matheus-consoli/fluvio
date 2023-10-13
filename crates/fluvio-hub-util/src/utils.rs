@@ -88,31 +88,45 @@ pub async fn get_package(pkgurl: &str, access: &HubAccess) -> Result<Vec<u8>> {
 }
 
 pub async fn get_package_with_token(pkgurl: &str, actiontoken: &str) -> Result<Vec<u8>> {
-    let mut resp = surf::get(pkgurl)
+    println!("lol image using surf in 2023");
+    let resp = fluvio_mini_http::client::Client::new()
+        .get(pkgurl)
         .header("Authorization", actiontoken)
+        .send()
         .await
-        .map_err(|_| HubError::PackageDownload("authorization error".into()))?;
+        .unwrap();
+    // let mut resp = surf::get(pkgurl)
+    //     .header("Authorization", actiontoken)
+    //     .await
+    //     .map_err(|_| HubError::PackageDownload("authorization error".into()))?;
 
-    match resp.status() {
-        StatusCode::Ok => {}
-        code => {
-            let body_err_message = resp
-                .body_string()
-                .await
-                .unwrap_or_else(|_err| "couldn't fetch error message".to_string());
-            let msg = format!("Status({code}) {body_err_message}");
-            return Err(HubError::PackageDownload(msg));
-        }
+    match resp.status().as_u16() {
+        200 => {}
+        status => panic!("Status code: {status}"),
     }
+
+    // match resp.status() {
+    //     StatusCode::Ok => {}
+    //     code => {
+    //         let body_err_message = resp
+    //             .body_string()
+    //             .await
+    //             .unwrap_or_else(|_err| "couldn't fetch error message".to_string());
+    //         let msg = format!("Status({code}) {body_err_message}");
+    //         return Err(HubError::PackageDownload(msg));
+    //     }
+    // }
 
     // todo: validate package signing by owner
     // todo: validate package signing by hub
 
-    let data = resp
-        .body_bytes()
-        .await
-        .map_err(|_| HubError::PackageDownload("Data unpack failure".into()))?;
-    Ok(data)
+    let data = hyper::body::to_bytes(resp.into_body()).await.unwrap();
+
+    // let data = resp
+    //     .body_bytes()
+    //     .await
+    //     .map_err(|_| HubError::PackageDownload("Data unpack failure".into()))?;
+    Ok(data.to_vec())
 }
 
 // deprecated, but keep for reference for a bit
